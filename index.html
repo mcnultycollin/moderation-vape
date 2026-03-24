@@ -892,18 +892,31 @@
 </footer>
 
 <script>
-  function handleSubmit(e) {
+ function handleSubmit(e) {
     e.preventDefault();
     const btn = e.target.querySelector('.email-btn');
     const input = e.target.querySelector('.email-input');
-    btn.textContent = 'You\'re in ✓';
-    btn.style.background = '#5a6642';
-    btn.style.borderColor = '#5a6642';
-    input.value = '';
-    input.placeholder = 'See you soon.';
-    input.disabled = true;
-    btn.disabled = true;
-  }
+    
+    const formData = new FormData(e.target);
+    
+    fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams(formData).toString()
+    })
+    .then(() => {
+        btn.textContent = 'You\'re in ✓';
+        btn.style.background = '#5a6642';
+        btn.style.borderColor = '#5a6642';
+        input.value = '';
+        input.placeholder = 'See you soon.';
+        input.disabled = true;
+        btn.disabled = true;
+    })
+    .catch(() => {
+        btn.textContent = 'Try again';
+    });
+}
 
   // Subtle scroll-fade for section reveals
   const observer = new IntersectionObserver((entries) => {
